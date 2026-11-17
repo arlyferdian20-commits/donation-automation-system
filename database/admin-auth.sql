@@ -58,6 +58,10 @@ FROM PUBLIC, anon, authenticated;
 GRANT SELECT ON TABLE public.staff_profiles
 TO authenticated;
 
+DROP POLICY IF EXISTS
+"Staff can read own profile"
+ON public.staff_profiles;
+
 CREATE POLICY "Staff can read own profile"
 ON public.staff_profiles
 FOR SELECT
@@ -83,7 +87,3 @@ COMMENT ON COLUMN public.staff_profiles.role IS
 
 COMMENT ON COLUMN public.staff_profiles.is_active IS
 'Controls whether the staff account is active in the application';
-
-DROP POLICY IF EXISTS
-"Staff can read own profile"
-ON public.staff_profiles;

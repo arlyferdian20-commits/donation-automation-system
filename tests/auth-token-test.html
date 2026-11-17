@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Donation Automation System — Auth Token Test</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root { color-scheme: light; font-family: Inter, system-ui, sans-serif; }
+    body { margin: 0; padding: 32px 16px; background: #f4f6f8; color: #17212b; }
+    main { max-width: 620px; margin: auto; background: white; border: 1px solid #e1e6eb; border-radius: 14px; padding: 24px; }
+    h1 { font-size: 22px; margin: 0 0 8px; }
+    p { color: #52606d; line-height: 1.5; }
+    label { display: block; margin: 16px 0 6px; font-weight: 600; font-size: 14px; }
+    input { width: 100%; box-sizing: border-box; padding: 11px 12px; border: 1px solid #cbd5df; border-radius: 8px; font: inherit; }
+    button { margin-top: 20px; padding: 11px 16px; border: 0; border-radius: 8px; background: #087f5b; color: white; font-weight: 700; cursor: pointer; }
+    button:disabled { opacity: .55; cursor: wait; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 14px; border-radius: 8px; background: #101820; color: #d7fbe8; min-height: 90px; }
+    .note { padding: 12px; background: #fff8e6; border: 1px solid #f2dfad; border-radius: 8px; color: #614b16; font-size: 13px; }
+    .status { font-weight: 700; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>Pengujian JWT — Donation Automation System</h1>
+  <p>Halaman uji lokal untuk memastikan Custom Access Token Hook menambahkan klaim role ke JWT akun staf.</p>
+  <div class="note">Gunakan hanya di komputer sendiri. Masukkan password langsung di halaman ini dan jangan kirim password atau access token kepada siapa pun. Gunakan Supabase Publishable Key (atau anon key lama), bukan secret/service_role key. Jangan deploy halaman uji ini ke website publik.</div>
+
+  <form id="test-form">
+    <label for="project-url">Supabase Project URL</label>
+    <input id="project-url" type="url" placeholder="https://YOUR_PROJECT_REF.supabase.co" required>
+
+    <label for="public-key">Supabase Publishable Key / anon key</label>
+    <input id="public-key" type="password" placeholder="sb_publishable_... atau anon key" required autocomplete="off">
+
+    <label for="email">Email staf</label>
+    <input id="email" type="email" placeholder="email akun staf" required autocomplete="username">
+
+    <label for="password">Password</label>
+    <input id="password" type="password" required autocomplete="current-password">
+
+    <button id="submit" type="submit">Login & Periksa JWT</button>
+  </form>
+
+  <h2 style="font-size:16px;margin-top:24px">Hasil pengujian</h2>
+  <div id="status" class="status" aria-live="polite">Belum diuji.</div>
+  <pre id="output">Klaim JWT akan tampil di sini. Token utuh tidak akan ditampilkan.</pre>
+</main>
+
+<script>
+(() => {
+  const form = document.getElementById('test-form');
+  const button = document.getElementById('submit');
+  const status = document.getElementById('status');
+  const output = document.getElementById('output');
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    button.disabled = true;
+    status.textContent = 'Sedang login dan memverifikasi JWT…';
+    output.textContent = '';
+
+    let client;
+    try {
+      const projectUrl = document.getElementById('project-url').value.trim().replace(/\/$/, '');
+      const publicKey = document.getElementById('public-key').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!window.supabase?.createClient) {
+        throw new Error('Supabase JS gagal dimuat. Periksa koneksi internet lalu muat ulang halaman.');
+      }
+
+      client = window.supabase.createClient(projectUrl, publicKey, {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+          detectSessionInUrl: false
+        }
+      });
+
+      const { data: signInData, error: signInError } = await client.auth.signInWithPassword({ email, password });
+      if (signInError) throw signInError;
+
+      const { data: claimsData, error: claimsError } = await client.auth.getClaims(signInData.session.access_token);
+      if (claimsError) throw claimsError;
+
+      const claims = claimsData.claims || {};
+      const roleOk = claims.app_role === 'super_admin';
+      const activeOk = claims.staff_active === true;
+
+      status.textContent = roleOk && activeOk
+        ? 'LULUS — role Super Admin dan status aktif terdeteksi.'
+        : 'PERLU DIPERIKSA — klaim tidak sesuai harapan.';
+
+      output.textContent = JSON.stringify({
+        email: claims.email ?? null,
+        sub: claims.sub ?? null,
+        app_role: claims.app_role ?? null,
+        staff_active: claims.staff_active ?? null,
+        checks: {
+          app_role_is_super_admin: roleOk,
+          staff_active_is_true: activeOk
+        },
+        token_verified_by_supabase_getClaims: true
+      }, null, 2);
+
+      await client.auth.signOut();
+    } catch (error) {
+      status.textContent = 'GAGAL — periksa pesan di bawah.';
+      output.textContent = String(error?.message || error);
+      if (client) {
+        try { await client.auth.signOut(); } catch (_) {}
+      }
+    } finally {
+      document.getElementById('password').value = '';
+      button.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>

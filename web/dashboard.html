@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#102a43">
+  <title>Dashboard — Donation Automation System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{font-family:"DM Sans",sans-serif;color:#172b3a;background:#f4f7f9;font-synthesis:none;text-rendering:optimizeLegibility;--navy:#102a43;--navy2:#183d59;--gold:#e6b84b;--green:#147d64;--muted:#718392;--line:#e3eaf0;--surface:#fff}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh}.app{min-height:100vh;display:grid;grid-template-columns:250px 1fr}
+    aside{background:linear-gradient(165deg,#0c2238,#153c57 72%,#0e594f);color:#fff;padding:25px 17px;display:flex;flex-direction:column;gap:28px}
+    .brand{display:flex;align-items:center;gap:11px;padding:4px 8px}.mark{width:42px;height:42px;display:grid;place-items:center;border:1px solid #987a38;border-radius:13px;color:var(--gold);background:#ffffff0d}.brand strong{display:block;font:800 11px "Plus Jakarta Sans";letter-spacing:.04em}.brand small{display:block;color:#b9cbd6;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+    .nav-label{padding:0 12px;color:#91a8b8;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px}.nav{display:grid;gap:5px}.nav a{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:9px;color:#d6e1e8;text-decoration:none;font-size:13px}.nav a:hover,.nav a.active{background:#ffffff18;color:#fff}.nav a.active{box-shadow:inset 3px 0 var(--gold)}.nav .ico{width:18px;text-align:center;color:#e7c46e}.side-foot{margin-top:auto;padding:14px 10px;border-top:1px solid #ffffff20;color:#b7c8d2;font-size:11px;line-height:1.6}
+    main{min-width:0}.topbar{height:72px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px;gap:18px}.crumb{font-size:12px;color:var(--muted)}.crumb strong{color:var(--navy);font-weight:700}.profile{display:flex;align-items:center;gap:12px}.avatar{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;background:#e5f2ed;color:var(--green);font-weight:800;font-size:13px}.profile-meta{line-height:1.4}.profile-meta strong{display:block;font-size:12px}.profile-meta small{color:var(--muted);font-size:10px}.logout{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 12px;color:#405667;font-weight:700;font-size:11px;cursor:pointer}.logout:hover{border-color:#b8c9d5}
+    .content{max-width:1440px;margin:0 auto;padding:32px 34px 48px}.welcome{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:26px}.eyebrow{color:var(--green);font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.welcome h1{font:800 26px "Plus Jakarta Sans";letter-spacing:-.04em;margin:7px 0 6px;color:var(--navy)}.welcome p{margin:0;color:var(--muted);font-size:13px}.date-chip{background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 13px;color:#587082;font-size:11px;white-space:nowrap}
+    .notice{display:flex;gap:12px;align-items:flex-start;background:#fff9e9;border:1px solid #f0dfb5;border-radius:11px;padding:14px 16px;margin-bottom:22px;color:#75591e;font-size:12px;line-height:1.6}.notice b{display:block;color:#5c4719;margin-bottom:2px}.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:23px}.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:17px 18px;min-height:128px}.stat-head{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px}.stat-icon{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:#edf5f2;color:var(--green);font-size:16px}.stat-value{font:800 23px "Plus Jakarta Sans";color:var(--navy);margin:13px 0 3px}.stat-foot{color:#9aa8b2;font-size:10px}
+    .panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:19px 20px;margin-bottom:18px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.panel h2{font:700 14px "Plus Jakarta Sans";margin:0;color:var(--navy)}.panel-sub{color:var(--muted);font-size:11px;margin-top:4px}.empty{padding:28px 12px;text-align:center;border:1px dashed #d9e3e9;border-radius:9px;color:var(--muted);font-size:12px;line-height:1.7}.empty strong{display:block;color:#415a6b;font-size:13px;margin-bottom:4px}.quick-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}.quick{border:1px solid var(--line);border-radius:10px;padding:15px;color:#456072}.quick b{display:block;color:var(--navy);font-size:12px;margin:8px 0 4px}.quick span{font-size:11px;color:var(--muted);line-height:1.5}.quick .qicon{font-size:19px;color:var(--green)}
+    .section-placeholder{display:none}.section-placeholder.visible{display:block}.status{font-size:10px;color:#8a6a23;background:#fff4d9;padding:5px 8px;border-radius:99px}.access-error{max-width:560px;margin:10vh auto;background:#fff;border:1px solid var(--line);border-radius:14px;padding:28px;text-align:center}.access-error h1{font:800 20px "Plus Jakarta Sans";color:var(--navy)}.access-error p{color:var(--muted);font-size:13px;line-height:1.6}
+    @media(max-width:1000px){.app{grid-template-columns:210px 1fr}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.content{padding:26px 22px}.topbar{padding:0 22px}}
+    @media(max-width:700px){.app{grid-template-columns:1fr}aside{padding:13px 14px;gap:12px}.brand{padding:2px 5px}.nav-label,.side-foot{display:none}.nav{display:flex;overflow-x:auto;padding-bottom:3px}.nav a{white-space:nowrap;padding:9px 11px;font-size:11px}.nav a.active{box-shadow:inset 0 -2px var(--gold)}.topbar{height:62px;padding:0 16px}.profile-meta{display:none}.content{padding:22px 15px 36px}.welcome{display:block}.date-chip{display:inline-block;margin-top:14px}.stats{gap:10px}.stat{padding:14px;min-height:116px}.stat-value{font-size:20px}.quick-grid{grid-template-columns:1fr}.logout{padding:8px 10px}}
+  </style>
+</head>
+<body>
+  <div id="loading" class="access-error"><h1>Memeriksa akses…</h1><p>Memvalidasi sesi dan role staf melalui Supabase Auth.</p></div>
+  <div id="denied" class="access-error" hidden><h1>Akses tidak tersedia</h1><p id="denied-message">Sesi tidak valid atau akun tidak memiliki akses staf aktif.</p><button class="logout" id="back-login">Kembali ke Login</button></div>
+  <div class="app" id="app" hidden>
+    <aside>
+      <div class="brand"><div class="mark" aria-hidden="true">⌂</div><div><strong>DONATION AUTOMATION</strong><small>Masjid Sejuta Pemuda</small></div></div>
+      <div><div class="nav-label">Workspace</div><nav class="nav" id="navigation">
+        <a href="#overview" class="active" data-section="overview"><span class="ico">▦</span>Dashboard</a>
+        <a href="#donations" data-section="donations" data-roles="super_admin,fundraising_admin,fundraising_staff"><span class="ico">↗</span>Data Donasi</a>
+        <a href="#donors" data-section="donors" data-roles="super_admin,fundraising_admin,fundraising_staff"><span class="ico">♙</span>Data Donatur</a>
+        <a href="#campaigns" data-section="campaigns" data-roles="super_admin,fundraising_admin"><span class="ico">◎</span>Campaign</a>
+        <a href="#reports" data-section="reports" data-roles="super_admin,fundraising_admin,viewer"><span class="ico">▤</span>Laporan</a>
+        <a href="#staff" data-section="staff" data-roles="super_admin"><span class="ico">♧</span>Manajemen Staf</a>
+      </nav></div>
+      <div class="side-foot">Masjid Peradaban 5.0<br>Internal access only · v0.1</div>
+    </aside>
+    <main>
+      <header class="topbar"><div class="crumb">Workspace <span aria-hidden="true">/</span> <strong id="crumb-title">Dashboard</strong></div><div class="profile"><div class="avatar" id="avatar">A</div><div class="profile-meta"><strong id="user-email">Staf</strong><small id="user-role">Role</small></div><button class="logout" id="logout">Keluar ↗</button></div></header>
+      <div class="content">
+        <section id="overview-section">
+          <div class="welcome"><div><div class="eyebrow">Admin workspace</div><h1>Selamat datang di Dashboard</h1><p>Ringkasan operasional donasi Masjid Sejuta Pemuda.</p></div><div class="date-chip" id="today"></div></div>
+          <div class="notice"><span>ⓘ</span><div><b>Dashboard tahap awal — data belum tersambung</b>Angka donasi, transaksi, campaign, dan donatur belum ditarik dari database. Bagian ini sengaja ditampilkan sebagai placeholder sampai akses data dan kebijakan RLS disiapkan.</div></div>
+          <div class="stats">
+            <article class="stat"><div class="stat-head"><span>Total Donasi</span><span class="stat-icon">◈</span></div><div class="stat-value">—</div><div class="stat-foot">Menunggu koneksi data</div></article>
+            <article class="stat"><div class="stat-head"><span>Transaksi Berhasil</span><span class="stat-icon">↗</span></div><div class="stat-value">—</div><div class="stat-foot">Menunggu koneksi data</div></article>
+            <article class="stat"><div class="stat-head"><span>Campaign Aktif</span><span class="stat-icon">◎</span></div><div class="stat-value">—</div><div class="stat-foot">Menunggu koneksi data</div></article>
+            <article class="stat"><div class="stat-head"><span>Total Donatur</span><span class="stat-icon">♙</span></div><div class="stat-value">—</div><div class="stat-foot">Menunggu koneksi data</div></article>
+          </div>
+          <div class="panel"><div class="panel-head"><div><h2>Aktivitas donasi terbaru</h2><div class="panel-sub">Transaksi terakhir yang tercatat di sistem</div></div><span class="status">Belum terhubung</span></div><div class="empty"><strong>Belum ada data untuk ditampilkan</strong>Setelah endpoint data dan izin akses database disiapkan, transaksi terbaru akan muncul di sini.</div></div>
+          <div class="panel"><div class="panel-head"><div><h2>Akses cepat</h2><div class="panel-sub">Modul utama sistem fundraising</div></div></div><div class="quick-grid"><div class="quick"><span class="qicon">↗</span><b>Data Donasi</b><span>Pemantauan pembayaran dan status transaksi.</span></div><div class="quick"><span class="qicon">◎</span><b>Campaign</b><span>Pengelolaan program dan target penggalangan.</span></div><div class="quick"><span class="qicon">▤</span><b>Laporan</b><span>Rekap donasi dan performa fundraising.</span></div></div></div>
+        </section>
+        <section class="section-placeholder" id="donations-section"><div class="welcome"><div><div class="eyebrow">Modul</div><h1>Data Donasi</h1><p>Pemantauan transaksi donasi.</p></div><span class="status">Tahap berikutnya</span></div><div class="panel"><div class="empty"><strong>Modul Data Donasi belum diaktifkan</strong>Struktur tabel sudah tersedia. Tampilan data akan dibuat setelah rancangan akses baca/tulis per role ditetapkan.</div></div></section>
+        <section class="section-placeholder" id="donors-section"><div class="welcome"><div><div class="eyebrow">Modul</div><h1>Data Donatur</h1><p>Database identitas dan riwayat donatur.</p></div><span class="status">Tahap berikutnya</span></div><div class="panel"><div class="empty"><strong>Modul Data Donatur belum diaktifkan</strong>Akses data pribadi donatur akan dibatasi sesuai kewenangan staf.</div></div></section>
+        <section class="section-placeholder" id="campaigns-section"><div class="welcome"><div><div class="eyebrow">Modul</div><h1>Campaign</h1><p>Pengelolaan program penggalangan dana.</p></div><span class="status">Tahap berikutnya</span></div><div class="panel"><div class="empty"><strong>Modul Campaign belum diaktifkan</strong>Form tambah, ubah, dan arsip campaign akan dibuat setelah aturan akses disepakati.</div></div></section>
+        <section class="section-placeholder" id="reports-section"><div class="welcome"><div><div class="eyebrow">Modul</div><h1>Laporan</h1><p>Ringkasan dan rekap performa fundraising.</p></div><span class="status">Tahap berikutnya</span></div><div class="panel"><div class="empty"><strong>Modul Laporan belum diaktifkan</strong>Laporan akan menggunakan data transaksi yang sudah diverifikasi.</div></div></section>
+        <section class="section-placeholder" id="staff-section"><div class="welcome"><div><div class="eyebrow">Khusus Super Admin</div><h1>Manajemen Staf</h1><p>Pengaturan akun dan role pengguna internal.</p></div><span class="status">Tahap berikutnya</span></div><div class="panel"><div class="empty"><strong>Manajemen Staf belum diaktifkan</strong>Pengelolaan akun harus dilakukan melalui proses backend tepercaya, bukan dengan memberi staf hak mengubah role sendiri.</div></div></section>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="./dashboard.js"></script>
+</body>
+</html>

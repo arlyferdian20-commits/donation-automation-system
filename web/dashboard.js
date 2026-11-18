@@ -30,7 +30,8 @@ function activateSection(section) {
   document.querySelectorAll("[data-section]").forEach((link) => {
     link.classList.toggle("active", link.dataset.section === section);
   });
-  document.querySelectorAll("#overview-section, .section-placeholder").forEach((panel) => {
+  document.getElementById("overview-section").hidden = section !== "overview";
+  document.querySelectorAll(".section-placeholder").forEach((panel) => {
     panel.classList.toggle("visible", panel.id === `${section}-section`);
   });
   document.getElementById("crumb-title").textContent =

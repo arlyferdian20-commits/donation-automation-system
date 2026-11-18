@@ -15,7 +15,7 @@
    ```bash
    python -m http.server 8000
    ```
-   Kemudian buka `http://localhost:8000/web/admin-login.html`.
+   Jika server dijalankan dari folder `web/`, buka `http://localhost:8000/admin-login.html`. Setelah login berhasil, halaman akan berpindah ke `dashboard.html`.
 
 ## Cara kerja
 - Login menggunakan Supabase Auth email/password.
@@ -30,3 +30,10 @@
 - Jangan pernah menaruh secret/service_role key di file frontend.
 - Jangan deploy halaman ini sebelum konfigurasi Auth redirect/origin, HTTPS, dan kebijakan deployment ditinjau.
 - Setelah perubahan role/status staf, terbitkan token baru dengan login ulang/refresh session. JWT yang sudah diterbitkan tidak otomatis berubah.
+
+
+## Dashboard awal
+- `dashboard.html` dan `dashboard.js` menyediakan dashboard awal dengan pemeriksaan JWT melalui `getClaims()` dan validasi `staff_active` serta `app_role`.
+- Setelah login berhasil, `admin-login.html` mengarahkan staf ke `dashboard.html`.
+- Menu navigasi disesuaikan dengan role. Bagian angka dan daftar transaksi masih placeholder; belum ada query ke tabel donasi.
+- Jalankan server dari folder `web/`, lalu buka `http://localhost:8000/admin-login.html`.

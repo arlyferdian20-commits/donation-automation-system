@@ -184,7 +184,7 @@
         showMessage("Akun tidak memiliki akses staf aktif. Hubungi Super Admin.");
         return false;
       }
-      showAuthorized(claims);
+      window.location.replace("./dashboard.html");
       return true;
     }
 
@@ -225,7 +225,7 @@
           throw new Error("Login ditolak. Akun ini belum memiliki role staf aktif. Hubungi Super Admin.");
         }
         passwordInput.value = "";
-        showAuthorized(claims);
+        window.location.replace("./dashboard.html");
       } catch (error) {
         passwordInput.value = "";
         showLogin();
